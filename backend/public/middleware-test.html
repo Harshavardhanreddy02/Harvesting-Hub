@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Middleware Tests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .test-result {
+            margin: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success {
+            background-color: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+        .error {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Middleware Test Dashboard</h1>
+    <div id="results"></div>
+
+    <script>
+        async function runTests() {
+            const resultsDiv = document.getElementById('results');
+            const tests = [
+                { name: 'Security Headers', url: '/api/test/security-headers', method: 'GET' },
+                { name: 'Body Parser', url: '/api/test/body-parser', method: 'POST', body: {test: 'data'} },
+                { name: 'Cookie Test', url: '/api/test/cookie-test', method: 'GET' },
+                { name: 'Session Test', url: '/api/test/session-test', method: 'GET' },
+                { name: 'Logger Test', url: '/api/test/logger-test', method: 'GET' },
+                { name: 'Error Handler', url: '/api/test/error-test', method: 'GET' }
+            ];
+
+            for (const test of tests) {
+                try {
+                    const response = await fetch(test.url, {
+                        method: test.method,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: test.body ? JSON.stringify(test.body) : undefined
+                    });
+                    const data = await response.json();
+                    resultsDiv.innerHTML += `
+                        <div class="test-result success">
+                            <h3>${test.name}</h3>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } catch (error) {
+                    resultsDiv.innerHTML += `
+                        <div class="test-result error">
+                            <h3>${test.name} - Error</h3>
+                            <pre>${error.message}</pre>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

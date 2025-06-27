@@ -1,0 +1,148 @@
+/* Enhanced Home Styles */
+:root {
+  --primary-color: #ea8bba;
+  --secondary-color: #73f2f0;
+  --text-color: #333;
+  --background-color: #f4f4f4;
+}
+  
+.parallax-container {
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;;
+}
+
+.home-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: none !important;
+}
+
+.hero-section {
+  color: white;
+  text-align: left;
+  padding: 4rem 0;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero-section .highlight {
+  display: block;
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+.enhanced-scroll-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.view-all-btn {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.view-all-btn:hover {
+  transform: translateX(5px);
+}
+
+.scroll-navigation {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-button {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.enhanced-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-item {
+  flex: 0 0 250px;
+  scroll-snap-align: start;
+}
+
+.middlemen{
+  color: black;
+  transition: color 0.5s ease-in-out;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: relative;
+  top: -20px;
+}
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Make background image fallbacks work */
+.bg-\[url\(\'\/images\/farm-bg\.jpg\'\)\] {
+  background-image: url('/images/farm-bg.jpg');
+  background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80');
+}
+
+.bg-\[url\(\'\/images\/farm-parallax\.jpg\'\)\] {
+  background-image: url('/images/farm-parallax.jpg');
+  background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80');
+}
+
+/* Make sure images look good */
+.object-cover {
+  object-fit: cover;
+}
+
+/* Ensure motion animations don't break layout */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Fix shadow issues */
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Smooth hover effect */
+.hover\:scale-110:hover {
+  transform: scale(1.1);
+}

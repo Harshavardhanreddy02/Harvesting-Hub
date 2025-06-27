@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="26" failures="0" errors="0" time="0.845">
+  <testsuite name="Authentication API Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:16" time="0.431" tests="4">
+    <testcase classname="Authentication API Integration Tests successful login returns token and user data" name="Authentication API Integration Tests successful login returns token and user data" time="0.011">
+    </testcase>
+    <testcase classname="Authentication API Integration Tests login with incorrect credentials fails" name="Authentication API Integration Tests login with incorrect credentials fails" time="0.001">
+    </testcase>
+    <testcase classname="Authentication API Integration Tests user registration with valid data succeeds" name="Authentication API Integration Tests user registration with valid data succeeds" time="0">
+    </testcase>
+    <testcase classname="Authentication API Integration Tests user registration with missing data fails" name="Authentication API Integration Tests user registration with missing data fails" time="0.057">
+    </testcase>
+  </testsuite>
+  <testsuite name="Product API Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.115" tests="3">
+    <testcase classname="Product API Integration Tests successfully fetches product list" name="Product API Integration Tests successfully fetches product list" time="0.001">
+    </testcase>
+    <testcase classname="Product API Integration Tests successfully searches products" name="Product API Integration Tests successfully searches products" time="0.001">
+    </testcase>
+    <testcase classname="Product API Integration Tests handles API errors correctly" name="Product API Integration Tests handles API errors correctly" time="0.052">
+    </testcase>
+  </testsuite>
+  <testsuite name="useStore Hook Tests" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.069" tests="5">
+    <testcase classname="useStore Hook Tests setToken updates token in state" name="useStore Hook Tests setToken updates token in state" time="0.001">
+    </testcase>
+    <testcase classname="useStore Hook Tests clearToken removes token from state" name="useStore Hook Tests clearToken removes token from state" time="0">
+    </testcase>
+    <testcase classname="useStore Hook Tests addtoCart adds an item to cart" name="useStore Hook Tests addtoCart adds an item to cart" time="0.001">
+    </testcase>
+    <testcase classname="useStore Hook Tests removeCart removes an item from cart" name="useStore Hook Tests removeCart removes an item from cart" time="0.001">
+    </testcase>
+    <testcase classname="useStore Hook Tests toggleWishlistItem toggles wishlist items" name="useStore Hook Tests toggleWishlistItem toggles wishlist items" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Store Reducer Tests" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.052" tests="4">
+    <testcase classname="Store Reducer Tests ADD_TO_CART adds an item to the cart" name="Store Reducer Tests ADD_TO_CART adds an item to the cart" time="0">
+    </testcase>
+    <testcase classname="Store Reducer Tests REMOVE_FROM_CART removes an item from the cart" name="Store Reducer Tests REMOVE_FROM_CART removes an item from the cart" time="0.001">
+    </testcase>
+    <testcase classname="Store Reducer Tests TOGGLE_WISHLIST adds an item to empty wishlist" name="Store Reducer Tests TOGGLE_WISHLIST adds an item to empty wishlist" time="0">
+    </testcase>
+    <testcase classname="Store Reducer Tests TOGGLE_WISHLIST removes an item from wishlist if already present" name="Store Reducer Tests TOGGLE_WISHLIST removes an item from wishlist if already present" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="String Utility Functions" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.046" tests="6">
+    <testcase classname="String Utility Functions capitalize capitalizes the first letter of a string" name="String Utility Functions capitalize capitalizes the first letter of a string" time="0.001">
+    </testcase>
+    <testcase classname="String Utility Functions capitalize handles empty strings" name="String Utility Functions capitalize handles empty strings" time="0">
+    </testcase>
+    <testcase classname="String Utility Functions formatPrice formats a number as a price string" name="String Utility Functions formatPrice formats a number as a price string" time="0.001">
+    </testcase>
+    <testcase classname="String Utility Functions truncate truncates a string if it exceeds the specified length" name="String Utility Functions truncate truncates a string if it exceeds the specified length" time="0">
+    </testcase>
+    <testcase classname="String Utility Functions truncate does not truncate if string is shorter than limit" name="String Utility Functions truncate does not truncate if string is shorter than limit" time="0">
+    </testcase>
+    <testcase classname="String Utility Functions truncate handles empty strings" name="String Utility Functions truncate handles empty strings" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Sanity test" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.043" tests="2">
+    <testcase classname="Sanity test Jest is working" name="Sanity test Jest is working" time="0">
+    </testcase>
+    <testcase classname="Sanity test Async test works" name="Sanity test Async test works" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="Basic Unit Tests" errors="0" failures="0" skipped="0" timestamp="2025-05-05T19:02:17" time="0.042" tests="2">
+    <testcase classname="Basic Unit Tests Jest is working correctly" name="Basic Unit Tests Jest is working correctly" time="0.001">
+    </testcase>
+    <testcase classname="Basic Unit Tests Async functions work correctly" name="Basic Unit Tests Async functions work correctly" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>

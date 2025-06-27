@@ -1,0 +1,8 @@
+# ...existing entries...
+node_modules/
+# Logs
+logs
+*.log
+logs/
+.qodo
+.env

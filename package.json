@@ -1,0 +1,50 @@
+{
+  "name": "harvest-hub",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon backend/index.js",
+    "start": "node backend/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@shadcn/ui": "^0.0.4",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.0",
+    "express-session": "^1.18.1",
+    "framer-motion": "^12.9.2",
+    "helmet": "^8.0.0",
+    "ioredis": "^5.6.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "react-icons": "^5.5.0",
+    "redis": "^5.0.1",
+    "rotating-file-stream": "^3.2.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "nodemon": "^3.1.7",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suryamanoj07/Harvest-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/suryamanoj07/Harvest-hub/issues"
+  },
+  "homepage": "https://github.com/suryamanoj07/Harvest-hub#readme"
+}
