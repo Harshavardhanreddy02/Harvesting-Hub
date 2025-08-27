@@ -3,11 +3,11 @@ import './App.css';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Products } from './pages/Products';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { About } from './pages/About';
 import { Schemes } from './pages/Schemes';
 import { Signup } from './pages/Signup';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './pages/Profile';
 import Sidebar from './components/Sidebar'; // Make sure this matches the export
@@ -23,7 +23,7 @@ import { Empty } from './components/Empty';
 import { AddTool } from './components/AddTool';
 import ListTool from './components/ListTool';
 import { Articles } from './pages/Articles';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import FarmerDashboard from './pages/FarmerDashboard';
 import FarmerRevenue from './pages/FarmerRevenue';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,10 +32,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import SellProducts from './pages/SellProducts';
 import SellTools from './pages/SellTools';
 import Wishlist from './pages/Wishlist';
-import { useSelector } from "react-redux";
-import { StoreProvider } from "./pages/redux/context/storeContext";
-import { Provider } from "react-redux";
-import { store } from "./pages/redux/store"; 
+ 
 import NetworkStatus from './components/NetworkStatus';
 import './utils/clearInvalidTokens'; // Clear invalid tokens on app startup
 
@@ -44,8 +41,6 @@ import './utils/clearInvalidTokens'; // Clear invalid tokens on app startup
 const AppContent = () => {
   const [category, setCategory] = useState('All');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
-  const location = useLocation();
 
   // Toggle sidebar function
   const toggleSidebar = () => {
@@ -106,29 +101,25 @@ const AppContent = () => {
 
 function App() {
   return (
-    <Provider store={store}>
-      <StoreProvider>
-        <BrowserRouter>
-          <>
-            <ToastContainer 
-              position="top-right"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss={false}
-              draggable={false}
-              pauseOnHover={false}
-              limit={3}
-              theme="light"
-            />
-            <AppContent />
-            <NetworkStatus />
-          </>
-        </BrowserRouter>
-      </StoreProvider>
-    </Provider>
+    <BrowserRouter>
+      <>
+        <ToastContainer 
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable={false}
+          pauseOnHover={false}
+          limit={3}
+          theme="light"
+        />
+        <AppContent />
+        <NetworkStatus />
+      </>
+    </BrowserRouter>
   );
 }
 
