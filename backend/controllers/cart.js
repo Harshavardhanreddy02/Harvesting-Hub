@@ -1,20 +1,14 @@
 import User from "../models/User.js";
-import redisClient from "../services/redis.service.js";
+// import redisClient from "../services/redis.service.js";
 
 const addToCart = async (req, res) => {
     try {
         const { userid, itemId } = req.body;
         
-        // Try to get user data from cache first
-        let userData = await redisClient.getUser(userid);
-        
+        // Get user data directly from database
+        const userData = await User.findOne({ _id: userid });
         if (!userData) {
-            userData = await User.findOne({ _id: userid });
-            if (!userData) {
-                return res.status(404).json({ success: false, message: "User not found" });
-            }
-            // Cache user data
-            await redisClient.setUser(userid, userData);
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
         let cartData = userData.cartData || {};
@@ -27,10 +21,6 @@ const addToCart = async (req, res) => {
         // Update user in database
         await User.findByIdAndUpdate(userid, { cartData });
         
-        // Update cache
-        userData.cartData = cartData;
-        await redisClient.setUser(userid, userData);
-        
         res.json({ success: true, message: "Added to cart" });
     } catch (err) {
         console.error("Error in addToCart:", err);
@@ -42,16 +32,10 @@ const removeFromCart = async (req, res) => {
     try {
         const { userid, itemId } = req.body;
         
-        // Try to get user data from cache first
-        let userData = await redisClient.getUser(userid);
-        
+        // Get user data directly from database
+        const userData = await User.findOne({ _id: userid });
         if (!userData) {
-            userData = await User.findOne({ _id: userid });
-            if (!userData) {
-                return res.status(404).json({ success: false, message: "User not found" });
-            }
-            // Cache user data
-            await redisClient.setUser(userid, userData);
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
         let cartData = userData.cartData || {};
@@ -65,10 +49,6 @@ const removeFromCart = async (req, res) => {
         // Update user in database
         await User.findByIdAndUpdate(userid, { cartData });
         
-        // Update cache
-        userData.cartData = cartData;
-        await redisClient.setUser(userid, userData);
-        
         res.json({ success: true, message: "Removed from cart" });
     } catch (err) {
         console.error("Error in removeFromCart:", err);
@@ -80,16 +60,10 @@ const getCart = async (req, res) => {
     try {
         const { userid } = req.body;
         
-        // Try to get user data from cache first
-        let userData = await redisClient.getUser(userid);
-        
+        // Get user data directly from database
+        const userData = await User.findOne({ _id: userid });
         if (!userData) {
-            userData = await User.findOne({ _id: userid });
-            if (!userData) {
-                return res.status(404).json({ success: false, message: "User not found" });
-            }
-            // Cache user data
-            await redisClient.setUser(userid, userData);
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
         const cartData = userData.cartData || {};

@@ -2,7 +2,7 @@ import fs from "fs";
 import productModel from "../models/Product.js";
 import Order from "../models/Order.js";
 import Product from '../models/Product.js';
-import redisClient from '../services/redis.service.js';
+// import redisClient from '../services/redis.service.js';
 
 const addProduct = async (req, res) => {
   try {
@@ -31,8 +31,7 @@ const addProduct = async (req, res) => {
     });
 
     await product.save();
-    // Invalidate all product caches when a new product is added
-    await redisClient.invalidateAllProductCache();
+    // Cache invalidation removed for serverless compatibility
     res.json({ success: true, message: "Product added successfully" });
   } catch (err) {
     console.error("Error adding product:", err);
@@ -42,15 +41,8 @@ const addProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
     try {
-        // Try to get products from cache first
-        const cachedProducts = await redisClient.getProductList();
-        if (cachedProducts) {
-            console.log('Serving products from cache');
-            return res.json({ success: true, message: cachedProducts });
-        }
-
-        // If not in cache, fetch from database
-        const products = await productModel.find().lean();
+        // Get products directly from database
+        const products = await productModel.find({}).lean();
         
         console.log(`Found ${products.length} products in database`);
         
@@ -78,8 +70,7 @@ const listProduct = async (req, res) => {
             };
         });
         
-        // Cache the normalized products
-        await redisClient.setProductList(normalizedProducts);
+        // Return products directly without caching
         return res.json({ success: true, message: normalizedProducts });
     } catch (err) {
         console.error("Error in listProduct:", err);
@@ -117,8 +108,7 @@ const farmerList = async (req, res) => {
             discount: product.discount || 0
         }));
 
-        // Update cache with fresh data
-        await redisClient.setFarmerProducts(email, normalizedProducts);
+        // Cache removed for serverless compatibility
         
         res.json({ success: true, message: "Products retrieved successfully.", products: normalizedProducts });
     } catch (error) {
@@ -137,8 +127,7 @@ const farmerDelete = async (req, res) => {
         return res.status(404).json({ success: false, message: "Product not found" });
       }
 
-      // Invalidate product cache
-      await redisClient.invalidateProductCache(id);
+      // Cache invalidation removed for serverless compatibility
       res.status(200).json({ success: true, message: "Product deleted successfully" });
     } catch (err) {
       res.status(500).json({ success: false, message: "Error deleting product", error: err.message });
@@ -160,8 +149,7 @@ const updateProduct = async (req, res) => {
         return res.status(404).json({ success: false, message: "Product not found" });
       }
 
-      // Invalidate product cache
-      await redisClient.invalidateProductCache(id);
+      // Cache invalidation removed for serverless compatibility
       res.status(200).json({ 
         success: true, 
         message: "Product updated successfully", 
@@ -470,18 +458,10 @@ export const getProductById = async (req, res) => {
   try {
     const productId = req.params.id;
     
-    // Try to get product from cache
-    const cachedProduct = await redisClient.getProduct(productId);
-    if (cachedProduct) {
-      return res.json(cachedProduct);
-    }
-
-    // If not in cache, fetch from database
+    // Get product directly from database
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: 'Product not found' });
     
-    // Cache the product
-    await redisClient.setProduct(productId, product);
     res.json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
