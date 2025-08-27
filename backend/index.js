@@ -12,8 +12,8 @@ import { dirname } from 'path';
 import { errorHandler } from './middleware/errorHandler.js';
 import fs from 'fs';
 import { debugMiddleware } from './middleware/debug.js';
-import setupSwagger from './api-documentation/swagger.js';
-import redisClient from './services/redis.service.js';
+// import setupSwagger from './api-documentation/swagger.js';
+// import redisClient from './services/redis.service.js';
 // Import all routes
 import authRouter from './routes/auth.route.js';
 import productRouter from './routes/product.route.js';
@@ -120,7 +120,7 @@ app.use(cors({
 }));
 
 // Setup Swagger documentation
-setupSwagger(app);
+// setupSwagger(app);
 
 // Routes
 app.use("/api/auth", authRouter);
@@ -139,25 +139,25 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, async () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-    console.log(`📍 Server URL: http://localhost:${PORT}`);
-    console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
-    
-    await redisClient.connectToRedis().then(() => {
-        console.log("✅ Redis connected");
-    }).catch((err) => {
-        console.log("⚠️  Redis connection error:", err.message);
+// For serverless deployment, export the app instead of listening
+if (process.env.NODE_ENV !== 'production') {
+    const server = app.listen(PORT, async () => {
+        console.log(`🚀 Server is running on port ${PORT}`);
+        console.log(`📍 Server URL: http://localhost:${PORT}`);
+        console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
     });
-});
 
-server.on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-        console.error(` Port ${PORT} is already in use. Please try:`);
-        console.error(`   1. Kill the process: lsof -ti:${PORT} | xargs kill -9`);
-        console.error(`   2. Or use a different port: PORT=3001 npm run dev`);
-        process.exit(1);
-    } else {
-        console.error('❌ Server error:', err);
-    }
-});
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(` Port ${PORT} is already in use. Please try:`);
+            console.error(`   1. Kill the process: lsof -ti:${PORT} | xargs kill -9`);
+            console.error(`   2. Or use a different port: PORT=3001 npm run dev`);
+            process.exit(1);
+        } else {
+            console.error('❌ Server error:', err);
+        }
+    });
+}
+
+// Export the app for serverless deployment
+export default app;
