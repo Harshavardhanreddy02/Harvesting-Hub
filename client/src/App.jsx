@@ -37,6 +37,7 @@ import { StoreProvider } from "./pages/redux/context/storeContext";
 import { Provider } from "react-redux";
 import { store } from "./pages/redux/store"; 
 import NetworkStatus from './components/NetworkStatus';
+import './utils/clearInvalidTokens'; // Clear invalid tokens on app startup
 
 // Removed global toast assignment
 // Separate component for the app content that uses useLocation

@@ -6,16 +6,20 @@ import { createContext, useEffect, useState, useContext, useReducer } from "reac
 import api from '../../../utils/axiosConfig';
 import { toast } from 'react-toastify';
 import { set } from "mongoose";
+import { validateToken, initializeAuth, forceLogout } from '../../../utils/tokenManager';
 
 export const storeContext = createContext();
+
+// Initialize auth and get valid token
+const validToken = initializeAuth();
 
 const initialState = {
   cartItems: JSON.parse(localStorage.getItem("cartItems") || "{}"),
   wishlist: JSON.parse(localStorage.getItem("wishlist") || "[]"),
   food_list: [],
   tool_list: [],
-  token: localStorage.getItem("token") || sessionStorage.getItem("token") || null,
-  user: JSON.parse(localStorage.getItem("user") || "null")
+  token: validToken,
+  user: validToken ? JSON.parse(localStorage.getItem("user") || "null") : null
 };
 
 const storeReducer = (state, action) => {
@@ -430,29 +434,37 @@ const fetchTool = async () => {
 };
 
   const loadCart = async () => {
-    if (!state.token) return;
+    // Check if user is authenticated
+    const token = state.token || localStorage.getItem('token');
+    const userId = state.user?._id || localStorage.getItem("userId");
+    
+    if (!token || !userId) {
+      console.log("No token or userId found, loading cart from localStorage only");
+      // Load from localStorage for unauthenticated users
+      const storedCart = localStorage.getItem("cartItems");
+      if (storedCart) {
+        try {
+          dispatch({ type: "SET_CART_ITEMS", payload: JSON.parse(storedCart) });
+        } catch (e) {
+          console.error("Error parsing stored cart:", e);
+          dispatch({ type: "SET_CART_ITEMS", payload: {} });
+        }
+      }
+      return;
+    }
     
     try {
-      console.log("Loading cart with token:", state.token.substring(0, 15) + "...");
+      console.log("Loading cart with token:", token.substring(0, 15) + "...");
       
-      // First try loading from server
-      const response = await api.post(
-        "/cart/get",
-        { 
-          userid: state.user?._id || localStorage.getItem("userId")
-        },
-        { 
-          headers: { 
-            "Authorization": `Bearer ${state.token}`,
-            "token": state.token 
-          } 
-        }
-      );
+      // Try loading from server for authenticated users
+      const response = await api.post("/cart/get", { userid: userId });
       
       console.log("Cart data received:", response.data);
       
       if (response.data.success && response.data.cartData) {
         dispatch({ type: "SET_CART_ITEMS", payload: response.data.cartData });
+        // Sync with localStorage
+        localStorage.setItem("cartItems", JSON.stringify(response.data.cartData));
       } else {
         // If server doesn't return cart, fallback to localStorage
         const storedCart = localStorage.getItem("cartItems");
@@ -466,7 +478,12 @@ const fetchTool = async () => {
       // Fallback to localStorage if server request fails
       const storedCart = localStorage.getItem("cartItems");
       if (storedCart) {
-        dispatch({ type: "SET_CART_ITEMS", payload: JSON.parse(storedCart) });
+        try {
+          dispatch({ type: "SET_CART_ITEMS", payload: JSON.parse(storedCart) });
+        } catch (e) {
+          console.error("Error parsing stored cart:", e);
+          dispatch({ type: "SET_CART_ITEMS", payload: {} });
+        }
       }
     }
   };
@@ -539,30 +556,45 @@ const fetchTool = async () => {
     if (storedUser) {
       dispatch({ type: "SET_USER", payload: JSON.parse(storedUser) });
     }
+  }, []);
+
+  useEffect(() => {
+    console.log("Component mounted, loading cart...");
+    loadCart(); // This will handle both authenticated and unauthenticated users
     
-    // Try to load cart data from localStorage first
-    const storedCart = localStorage.getItem("cartItems");
-    if (storedCart) {
-      dispatch({ type: "SET_CART_ITEMS", payload: JSON.parse(storedCart) });
-    }
-    
-    // Then initialize cart and wishlist from server if token exists
+    // Only load wishlist if authenticated
     if (state.token && state.token.trim() !== "") {
-      console.log("Token found, loading cart and wishlist from server...");
-      loadCart();
+      console.log("Token found, loading wishlist from server...");
       fetchWishlist();
     }
+
+    // Add authentication event listeners
+    const handleAuthLogout = (event) => {
+      console.log('Auth logout event received:', event.detail);
+      clearToken();
+      safeToast('Session expired. Please login again.', 'warn');
+    };
+
+    window.addEventListener('auth-logout', handleAuthLogout);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('auth-logout', handleAuthLogout);
+    };
   }, []);
 
   // Make sure cart is reloaded when token changes
   useEffect(() => {
+    console.log("Token changed, reloading cart and wishlist...");
+    loadCart(); // This will handle both authenticated and unauthenticated users
+    
+    // Only load wishlist if authenticated
     if (state.token && state.token.trim() !== "") {
-      loadCart();
       fetchWishlist();
     }
   }, [state.token]);
 
-return (
+  return (
     <storeContext.Provider
       value={{
         ...state,
@@ -576,7 +608,7 @@ return (
         fetchTool,
         loadCart,
         loadWishlist,
-        fetchWishlist,  // Make sure fetchWishlist is included here
+        fetchWishlist,
         loading,
         setUserInfo,
         input,

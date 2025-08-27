@@ -20,13 +20,21 @@ export const Header = ({ onMenuClick }) => {
   const location = useLocation();
 
   const getCartQuantity = () => {
-    return Object.values(cartItems).reduce((total, quantity) => total + quantity, 0);
+    if (!cartItems || typeof cartItems !== 'object') {
+      return 0;
+    }
+    return Object.values(cartItems).reduce((total, quantity) => {
+      const qty = parseInt(quantity) || 0;
+      return qty > 0 ? total + qty : total;
+    }, 0);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("cartItems"); // Clear cart on logout
     setToken("");
     dispatch(logoutSuccess());
+    dispatch({ type: "CLEAR_CART" }); // Clear cart from state
     navigate("/");
   };
 

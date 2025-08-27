@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import "./Wishlist.css";
 
 const Wishlist = () => {
-  const { wishlist, food_list, tool_list, token, fetchWishlist } = useContext(storeContext);
+  const { wishlist, food_list, tool_list, token } = useContext(storeContext);
   const { currentUser } = useSelector((state) => state.user);
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,6 +18,13 @@ const Wishlist = () => {
 
     // Get the appropriate list based on user role
     const relevantList = currentUser?.role === 'Farmer' ? tool_list : food_list;
+    
+    // Ensure relevantList is an array before filtering
+    if (!Array.isArray(relevantList)) {
+      setWishlistItems([]);
+      setLoading(false);
+      return;
+    }
     
     // Filter items that are in the wishlist
     const items = relevantList.filter(item => wishlist && wishlist.includes(item._id));

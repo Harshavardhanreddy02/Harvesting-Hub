@@ -156,8 +156,8 @@ const List = () => {
                   className="list-table-format transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:border-4 hover:border-blue-400 hover:bg-blue-200"
                 >
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.image}`}
-                    alt=""
+                    src={item.image ? `${import.meta.env.VITE_BACKEND_URL}/images/${item.image}` : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f0f0f0'/%3E%3Ctext x='50' y='50' font-size='12' text-anchor='middle' alignment-baseline='middle' font-family='Arial, sans-serif' fill='%23999999'%3ENo Image%3C/text%3E%3C/svg%3E"}
+                    alt={item.name || "Product"}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src =

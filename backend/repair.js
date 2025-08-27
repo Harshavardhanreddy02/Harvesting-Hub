@@ -7,7 +7,7 @@ dotenv.config();
 async function repairData() {
     try {
         // Connect to MongoDB
-        await mongoose.connect(process.env.MONGO_URL || 'mongodb+srv://manojsurya463:BjxbMbniGwKlMbmT@cluster0.tjaza.mongodb.net/MERN-farmers');
+        await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://harshavardhanreddyv22:harsha8485@cluster0.0gmulll.mongodb.net/harvesthub?retryWrites=true&w=majority&appName=Cluster0');
         console.log('Connected to MongoDB');
 
         // Find all products with invalid ratings

@@ -74,7 +74,7 @@ app.use(cookieParser());
 
 // Add session middleware
 app.use(session({
-    secret: 'harvest-hub-secret-key',
+    secret: process.env.SESSION_SECRET || 'harvesting-hub-secure-key-' + Math.random().toString(36).substring(2, 15),
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -138,11 +138,26 @@ app.use("/api/rating", ratingRouter);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`);
+
+const server = app.listen(PORT, async () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📍 Server URL: http://localhost:${PORT}`);
+    console.log(`📚 API Documentation: http://localhost:${PORT}/api-docs`);
+    
     await redisClient.connectToRedis().then(() => {
-        console.log("Redis connected");
+        console.log("✅ Redis connected");
     }).catch((err) => {
-        console.log("Redis connection error:", err);
+        console.log("⚠️  Redis connection error:", err.message);
     });
+});
+
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(` Port ${PORT} is already in use. Please try:`);
+        console.error(`   1. Kill the process: lsof -ti:${PORT} | xargs kill -9`);
+        console.error(`   2. Or use a different port: PORT=3001 npm run dev`);
+        process.exit(1);
+    } else {
+        console.error('❌ Server error:', err);
+    }
 });

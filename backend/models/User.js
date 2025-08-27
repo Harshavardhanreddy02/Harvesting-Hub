@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['customer', 'farmer', 'admin'], // Ensure enum values match exactly with frontend
-    default: 'customer'
+    enum: ['Customer', 'Farmer', 'Admin'], // Match frontend capitalization
+    default: 'Customer'
   },
   personal_address: {
     type: String,
@@ -78,6 +78,14 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+// Normalize role before validation and saving
+userSchema.pre('validate', function(next) {
+  if (this.role) {
+    this.role = this.role.charAt(0).toUpperCase() + this.role.slice(1).toLowerCase();
+  }
+  next();
+});
+
 // Hash password before saving
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
@@ -97,6 +105,14 @@ userSchema.pre('findOneAndUpdate', function(next) {
   // Log the update operation for debugging
   console.log('User update operation:', update);
   
+  // Normalize role to match enum values
+  if (update.$set && update.$set.role) {
+    update.$set.role = update.$set.role.charAt(0).toUpperCase() + update.$set.role.slice(1).toLowerCase();
+  }
+  if (update.role) {
+    update.role = update.role.charAt(0).toUpperCase() + update.role.slice(1).toLowerCase();
+  }
+  
   // Remove any empty strings for optional fields to prevent overwriting with empty values
   if (update.$set) {
     Object.keys(update.$set).forEach(key => {
@@ -108,6 +124,7 @@ userSchema.pre('findOneAndUpdate', function(next) {
   
   next();
 });
+
 
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword) {

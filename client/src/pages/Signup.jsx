@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import signbg from "../../../client/assets/signbg.jpg";
+import toastService from "../utils/toastService";
 
 export const Signup = () => {
-  const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
+  const [formData, setFormData] = useState({ role: 'Farmer' }); // Initialize with default role
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -22,21 +22,21 @@ export const Signup = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
         formData
       );
-      if (res.data.success === "false") {
-        setError(res.data.message);
+      if (res.data.success === false) {
+        toastService.error(res.data.message);
         setLoading(false);
         console.log(res.data.message);
         return;
       }
       setLoading(false);
-      setError(false);
+      toastService.success("Account created successfully! Please login.");
       navigate("/Login");
     } catch (err) {
       setLoading(false);
-      setError(err.message);
+      toastService.error(err.response?.data?.message || err.message || "Registration failed. Please try again.");
     }
   };
 
@@ -88,16 +88,20 @@ export const Signup = () => {
             />
           </div>
           <div className="flex items-center gap-4">
-            <p className="font-medium">Role:</p>
-            <select
-              id="role"
-              onChange={handleChange}
-              className="px-3 py-2 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-500 shadow-md transition-all duration-200"
-            >
-              <option value="Farmer">Farmer</option>
-              <option value="Customer">Customer</option>
-              <option value="Admin">Admin</option>
-            </select>
+            <div className="mb-2">
+              <p>Role:</p>
+              <select
+                id="role"
+                onChange={handleChange}
+                className="px-3 py-2 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-500 shadow-md transition-all duration-200"
+              >
+                <option value="Farmer">Farmer</option>
+                <option value="Customer">Customer</option>
+                {formData.email === "harshavardhanreddyvanukuri26@gmail.com" && (
+                  <option value="Admin">Admin</option>
+                )}
+              </select>
+            </div>
           </div>
           <button
             disabled={loading}
@@ -105,7 +109,7 @@ export const Signup = () => {
           >
             {loading ? "Loading..." : "Sign up"}
           </button>
-          <OAuth />
+          <OAuth mode="signup" selectedRole={formData.role || 'Farmer'} />
         </form>
         <div className="flex justify-center items-center mt-5">
           <p className="text-gray-600">Already have an account?</p>
@@ -115,7 +119,6 @@ export const Signup = () => {
             </span>
           </Link>
         </div>
-        {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
       </div>
     </div>
   );

@@ -151,7 +151,7 @@ export const Products = ({ category, setCategory }) => {
                   name={item.name || "Unnamed Product"}
                   description={item.description || ""}
                   price={parseFloat(item.price) || 0}
-                  image={item.image || `${import.meta.env.VITE_BACKEND_URL}/uploads/` + item.image}
+                  image={item.image}
                   stock={parseInt(item.stockQuantity) || 0}
                 />
               ))}
