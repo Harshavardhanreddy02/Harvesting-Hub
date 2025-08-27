@@ -115,10 +115,9 @@ app.use(debugMiddleware);
 
 // Enable CORS
 app.use(cors({
-    origin: ['http://localhost:5173', process.env.CLIENT_URL],
-    credentials: true,
+  origin: process.env.CLIENT_URL, 
+  credentials: true
 }));
-
 // Setup Swagger documentation
 // setupSwagger(app);
 
