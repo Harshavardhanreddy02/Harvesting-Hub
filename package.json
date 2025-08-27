@@ -1,5 +1,5 @@
 {
-  "name": "harvest-hub",
+  "name": "harvesting-hub",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -8,9 +8,9 @@
     "start": "node backend/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Harshavardhan Reddy",
   "license": "ISC",
-  "description": "",
+  "description": "A comprehensive agricultural marketplace platform for farmers and buyers",
   "dependencies": {
     "@shadcn/ui": "^0.0.4",
     "bcryptjs": "^2.4.3",
@@ -41,10 +41,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suryamanoj07/Harvest-hub.git"
+    "url": "git+https://github.com/Harshavardhanreddy02/Harvesting-Hub.git"
   },
   "bugs": {
-    "url": "https://github.com/suryamanoj07/Harvest-hub/issues"
+    "url": "https://github.com/Harshavardhanreddy02/Harvesting-Hub/issues"
   },
-  "homepage": "https://github.com/suryamanoj07/Harvest-hub#readme"
+  "homepage": "https://github.com/Harshavardhanreddy02/Harvesting-Hub#readme"
 }

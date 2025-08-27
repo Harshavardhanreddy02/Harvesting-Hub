@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Feedback.css";
+import { toastService } from "../utils/toastService";
 
 function Feedback() {
   const [formData, setFormData] = useState({
@@ -36,7 +37,7 @@ function Feedback() {
       );
 
       if (response.ok) {
-        alert("Feedback submitted successfully!");
+        toastService.success("Feedback submitted successfully!");
         setFormData({
           name: "",
           email: "",
@@ -51,11 +52,11 @@ function Feedback() {
         });
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.error}`);
+        toastService.error(`Error: ${errorData.error}`);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while submitting feedback.");
+      toastService.error("An error occurred while submitting feedback.");
     }
   };
 

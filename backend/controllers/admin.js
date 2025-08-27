@@ -25,10 +25,9 @@ export const createUser = async (req, res) => {
   try {
     console.log("Create user request body:", req.body);
     
-    // Ensure role is lowercase to match enum
-    if (req.body.role) {
-      req.body.role = req.body.role.toLowerCase();
-    }
+    // Don't modify role - let the User model pre-save middleware handle it
+    
+    console.log("Processed user data before save:", req.body);
     
     const newUser = new User(req.body);
     await newUser.save();
@@ -72,9 +71,9 @@ export const updateUser = async (req, res) => {
     console.log('Full request body:', req.body);
     console.log('Request headers:', req.headers);
 
-    // Normalize role to lowercase
+    // Normalize role to capitalized format
     if (updateData.role) {
-      updateData.role = updateData.role.toLowerCase();
+      updateData.role = updateData.role.charAt(0).toUpperCase() + updateData.role.slice(1).toLowerCase();
     }
 
     console.log(`Attempting to update user with ID: ${id}`);

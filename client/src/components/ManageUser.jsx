@@ -9,7 +9,7 @@ const ManageUser = () => {
   const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState({
-    name: '',
+    user_name: '',
     email: '',
     role: '',
     password: ''
@@ -41,24 +41,10 @@ const ManageUser = () => {
     e.preventDefault();
     
     try {
+      // Use userData directly since role values now match the User model enum
       console.log("Submitting user data:", userData);
       
-      // Map frontend role names to backend role names if necessary
-      let formattedUserData = { ...userData };
-      
-      // Map 'Customer' to 'customer' (lowercase) if needed
-      if (formattedUserData.role === 'Customer') {
-        formattedUserData.role = 'customer';
-      } else if (formattedUserData.role === 'Farmer') {
-        formattedUserData.role = 'farmer';
-      } else if (formattedUserData.role === 'Admin') {
-        formattedUserData.role = 'admin';
-      }
-      
-      console.log("Formatted user data:", formattedUserData);
-      
-      // Continue with the API call using the formatted data
-      const response = await api.post('/admin/users', formattedUserData);
+      const response = await api.post('/admin/users', userData);
       
       if (response.data.success) {
         toast.success('User saved successfully');
@@ -96,7 +82,7 @@ const ManageUser = () => {
   };
 
   const initialUserData = {
-    name: '',
+    user_name: '',
     email: '',
     role: '',
     password: ''
@@ -128,7 +114,7 @@ const ManageUser = () => {
                 key={idx}
                 className="user-table-format transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:border-4 hover:border-blue-400 hover:bg-blue-200"
               >
-                <p className="mx-20">{user.name}</p>
+                <p className="mx-20">{user.user_name}</p>
                 <p className="mx-12">{user.email}</p>
                 <p>{user.role}</p>
                 <div className="actions">
@@ -166,8 +152,8 @@ const ManageUser = () => {
                 <label>Name</label>
                 <input
                   type="text"
-                  name="name"
-                  value={userData.name}
+                  name="user_name"
+                  value={userData.user_name}
                   onChange={handleChange}
                   required
                 />
@@ -192,9 +178,9 @@ const ManageUser = () => {
                   required
                 >
                   <option value="">Select Role</option>
-                  <option value="customer">Customer</option>
-                  <option value="farmer">Farmer</option>
-                  <option value="admin">Admin</option>
+                  <option value="Customer">Customer</option>
+                  <option value="Farmer">Farmer</option>
+                  <option value="Admin">Admin</option>
                 </select>
               </div>
               <div className="form-group">

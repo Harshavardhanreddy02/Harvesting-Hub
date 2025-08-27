@@ -196,9 +196,10 @@ export const Home = ({ category, setCategory }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/topselling`
       );
-      setFastSellingItems(response.data.message);
+      setFastSellingItems(response.data.message || []);
     } catch (error) {
       console.error("Error fetching fast-selling items:", error);
+      setFastSellingItems([]);
     }
   };
 
@@ -207,9 +208,10 @@ export const Home = ({ category, setCategory }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/product/recentadded`
       );
-      setRecentItems(response.data.message);
+      setRecentItems(response.data.message || []);
     } catch (error) {
       console.error("Error fetching recently added items:", error);
+      setRecentItems([]);
     }
   };
 
@@ -218,9 +220,10 @@ export const Home = ({ category, setCategory }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/tool/topselling`
       );
-      setFastSellingTools(response.data.message);
+      setFastSellingTools(response.data.message || []);
     } catch (error) {
       console.error("Error fetching fast-selling tools:", error);
+      setFastSellingTools([]);
     }
   };
 
@@ -229,9 +232,10 @@ export const Home = ({ category, setCategory }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/tool/recentadded`
       );
-      setNewlyAddedTools(response.data.message);
+      setNewlyAddedTools(response.data.message || []);
     } catch (error) {
       console.error("Error fetching newly added tools:", error);
+      setNewlyAddedTools([]);
     }
   };
 

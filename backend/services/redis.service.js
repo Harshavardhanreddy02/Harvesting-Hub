@@ -65,6 +65,15 @@ class RedisService {
         await this.setCache(`farmer:products:${email}`, products);
     }
 
+    // User-specific cache methods
+    async getUser(userId) {
+        return this.getCache(`user:${userId}`);
+    }
+
+    async setUser(userId, userData) {
+        await this.setCache(`user:${userId}`, userData);
+    }
+
     // Cache invalidation methods
     async invalidateProductCache(productId) {
         try {

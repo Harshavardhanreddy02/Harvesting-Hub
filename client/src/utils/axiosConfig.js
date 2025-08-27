@@ -35,6 +35,15 @@ api.interceptors.request.use(
   }
 );
 
+// Token validation and clearing utility
+const clearAuthTokens = () => {
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
+  localStorage.removeItem('user');
+  sessionStorage.removeItem('user');
+  console.log('Cleared invalid authentication tokens');
+};
+
 // Add response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
@@ -48,8 +57,18 @@ api.interceptors.response.use(
       
       // Handle 401 Unauthorized errors (token expired or invalid)
       if (error.response.status === 401) {
-        console.error('Authentication failed. Redirecting to login...');
-        // You could dispatch a logout action or redirect to login here
+        console.error('Authentication failed. Clearing tokens and redirecting...');
+        clearAuthTokens();
+        
+        // Dispatch custom event to notify components about logout
+        window.dispatchEvent(new CustomEvent('auth-logout', { 
+          detail: { reason: 'token-invalid' } 
+        }));
+        
+        // Redirect to login page after a short delay
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
       } else if (error.response.status === 404) {
         console.error('API endpoint not found:', error.config.url);
       }
@@ -64,5 +83,8 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Export token clearing utility for manual use
+export { clearAuthTokens };
 
 export default api;
