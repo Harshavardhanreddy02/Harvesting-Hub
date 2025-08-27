@@ -122,7 +122,28 @@ app.use(cors({
 // Setup Swagger documentation
 // setupSwagger(app);
 
-// Routes
+// Root route
+app.get("/", (req, res) => {
+    res.json({
+        message: "Harvest Hub Backend API",
+        status: "running",
+        version: "1.0.0",
+        endpoints: {
+            auth: "/api/auth",
+            products: "/api/product", 
+            tools: "/api/tool",
+            cart: "/api/cart",
+            orders: "/api/order",
+            users: "/api/user",
+            wishlist: "/api/wishlist",
+            admin: "/api/admin",
+            feedback: "/api/feedback",
+            rating: "/api/rating"
+        }
+    });
+});
+
+// API Routes
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/tool", toolRouter);
