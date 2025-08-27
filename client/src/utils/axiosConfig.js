@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a custom axios instance with a base URL
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api`,
+  baseURL: `${import.meta.env.VITE_BACKEND_URL || 'https://harvesting-hub.vercel.app'}/api`,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ api.interceptors.request.use(
     }
     
     // Add logging for debugging purposes
-    if (process.env.NODE_ENV !== 'production') {
+    if (import.meta.env.MODE !== 'production') {
       console.log(`API Request to: ${config.url}`, config);
     }
     
