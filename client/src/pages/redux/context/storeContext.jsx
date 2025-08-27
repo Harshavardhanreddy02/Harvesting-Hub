@@ -43,7 +43,7 @@ const storeReducer = (state, action) => {
         token: null,
         user: null
       };
-    case "ADD_TO_CART":
+    case "ADD_TO_CART": {
       const updatedCartItems = {
         ...state.cartItems,
         [action.payload]: (state.cartItems[action.payload] || 0) + 1,
@@ -53,7 +53,8 @@ const storeReducer = (state, action) => {
         ...state,
         cartItems: updatedCartItems,
       };
-    case "REMOVE_FROM_CART":
+    }
+    case "REMOVE_FROM_CART": {
       const newCartItems = { ...state.cartItems };
       delete newCartItems[action.payload];
       localStorage.setItem("cartItems", JSON.stringify(newCartItems));
@@ -61,6 +62,7 @@ const storeReducer = (state, action) => {
         ...state,
         cartItems: newCartItems,
       };
+    }
     case "CLEAR_CART":
       localStorage.removeItem("cartItems");
       return {
@@ -96,18 +98,6 @@ const storeReducer = (state, action) => {
       return {
         ...state,
         tool_list: action.payload,
-      };
-    case "SET_TOKEN":
-      localStorage.setItem("token", action.payload);
-      return {
-        ...state,
-        token: action.payload
-      };
-    case "CLEAR_TOKEN":
-      localStorage.removeItem("token");
-      return {
-        ...state,
-        token: ""
       };
     case "SET_INPUT":
       return {
