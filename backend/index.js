@@ -115,7 +115,7 @@ app.use(debugMiddleware);
 
 // Enable CORS
 app.use(cors({
-  origin: process.env.CLIENT_URL, 
+  origin: ['https://harvesting-hub-22sx.vercel.app', process.env.CLIENT_URL], 
   credentials: true
 }));
 // Setup Swagger documentation
